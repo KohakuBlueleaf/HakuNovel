@@ -1,3 +1,3 @@
 config = {
-    'download_folder': '/Users/kblueleaf/Downloads/novels/'
+    'download_folder': '/Users/<USER_NAME>/Downloads/novels/'
 }
