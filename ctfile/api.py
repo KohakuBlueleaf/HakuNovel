@@ -23,11 +23,11 @@ async def get_file_info(
 ) -> tuple[str]:
     '''get file info for getting download link'''
     if passcode:
-        raw = await aio_get(
+        raw, _ = await aio_get(
             API[0].format(file_id=file_id, passcode=passcode),
         )
     else:
-        raw = await aio_get(API[1].format(file_id=file_id))
+        raw, _ = await aio_get(API[1].format(file_id=file_id))
         
     data = loads(bytes.decode(raw))
     return data['file']['file_name'], data['file']['file_chk']
@@ -47,7 +47,7 @@ async def get_download_link(
     else:
         name, chk = await get_file_info(file_id, passcode)
     
-    raw = await aio_get(API[2].format(uid=uid, fid=fid, chk=chk))
+    raw, _ = await aio_get(API[2].format(uid=uid, fid=fid, chk=chk))
     data = loads(bytes.decode(raw))
     
     return name, data['downurl']
@@ -74,7 +74,7 @@ async def download_file(
     while True:
         await CTFILE_LOCK.acquire()
         await asyncio.sleep(0.5)
-        temp = await aio_get(downlink, headers={
+        temp, _ = await aio_get(downlink, headers={
             'Range': f'{iter*CHUNK}-{(iter+1)*CHUNK-1}'
         })
         await CTFILE_LOCK.release()

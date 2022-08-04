@@ -8,7 +8,7 @@ API = 'https://www.mobinovels.com/{}/'
 
 async def get_list_of_epub(bname: str) -> list[str]:
     '''Get epub link from mobi website'''
-    data = await aio_get(API.format(bname))
+    data, _ = await aio_get(API.format(bname))
     soup = Soup(bytes.decode(data), features="html.parser")
     links = [
         row.find_all('a')[-1]['href'].split('?')[0]

@@ -1,9 +1,9 @@
+import os
+import asyncio
+
 from mobinovel.api import get_list_of_epub
 from ctfile.api import download_file
 from config import config
-
-import os
-import asyncio
 
 
 async def main():
@@ -14,7 +14,7 @@ async def main():
         os.makedirs(path)
         
     links = await get_list_of_epub(bname)
-    for i in links[12:]:
+    for i in links:
         while True:
             try:
                 name, raw = await download_file(i, '6195')
