@@ -23,6 +23,7 @@ async def main():
     
     title = title.replace(':', '：')
     path = os.path.join(config['download_folder'], title)
+    path = os.path.expanduser(path)
     
     if not os.path.isdir(path):
         os.makedirs(path)

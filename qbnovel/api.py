@@ -47,7 +47,7 @@ async def read_page(
         content.pop()
     
     return [
-        str(i).replace('<p>', '<p>&emsp;&emsp;')
+        str(i).replace('<p>', '<p>&nbsp;&nbsp;')
         for i in content 
         if i.find('img') is None
     ]
@@ -94,7 +94,7 @@ async def read_chapter(
 
 
 async def download_book(
-    title: str, chapters: dict[str]
+    title: str, chapters: dict
 ) -> dict[str, list[str]]:
     print(f'[Episode] Start download {title}')
     all_chapter_content = await asyncio.gather(*[
@@ -119,7 +119,7 @@ async def get_toc(
         'ul', {'id': 'chapterList'}
     ).find_all('a')
     
-    episodes = {}
+    episodes: dict = {}
     for ch in toc:
         episode, ch_title = ch.text.split(' ', 1)
         
@@ -133,7 +133,7 @@ async def get_toc(
 
 async def download(
     bid: str
-) -> dict[str, dict[str, list[str]]]:
+) -> tuple[str, str, dict[str, dict[str, list[str]]]]:
     title, author, episodes = await get_toc(bid)
     
     all_episode_content = await asyncio.gather(*[
