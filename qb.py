@@ -31,7 +31,8 @@ async def main():
     for i, (ep_title, ep_content) in enumerate(content.items()):
         print(ep_title)
         book = make_book(
-            f'{title} {ep_title}', 
+            title,
+            f'{title} {ep_title}',
             f'QBNOVEL_{title}', 
             f'{author}', 
             ep_content

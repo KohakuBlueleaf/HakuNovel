@@ -1,4 +1,5 @@
 import asyncio
+from distutils.log import error
 import re
 from json import loads, dumps
 
@@ -36,7 +37,12 @@ async def read_page(
         if retry > WARNING_THERSHOLD:
             print(f'{bid}-{cid} retry {retry} times.')
     
-    soup = Soup(raw.decode('gbk'), features='html.parser')
+    try:
+        soup = Soup(raw.decode('gbk', errors="replace"), features='html.parser')
+    except UnicodeDecodeError as e:
+        print(raw.decode('gbk', errors="replace"))
+        print(bid, cid, page)
+        raise e
     
     content: list[Tag] = soup.find(
         'div', {'id': 'TextContent'}
@@ -47,7 +53,13 @@ async def read_page(
         content.pop()
     
     return [
+<<<<<<< Updated upstream
         str(i).replace('<p>', '<p>&nbsp;&nbsp;')
+=======
+        str(i)
+            .replace('<p>', '<p>&nbsp;&nbsp;')
+            .replace('[email&#160;protected]', '@')
+>>>>>>> Stashed changes
         for i in content 
         if i.find('img') is None
     ]
@@ -94,7 +106,11 @@ async def read_chapter(
 
 
 async def download_book(
+<<<<<<< Updated upstream
     title: str, chapters: dict
+=======
+    title: str, chapters: dict[str, str]
+>>>>>>> Stashed changes
 ) -> dict[str, list[str]]:
     print(f'[Episode] Start download {title}')
     all_chapter_content = await asyncio.gather(*[
@@ -119,7 +135,11 @@ async def get_toc(
         'ul', {'id': 'chapterList'}
     ).find_all('a')
     
+<<<<<<< Updated upstream
     episodes: dict = {}
+=======
+    episodes: dict[str, dict[str, Tag]] = {}
+>>>>>>> Stashed changes
     for ch in toc:
         episode, ch_title = ch.text.split(' ', 1)
         

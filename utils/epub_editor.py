@@ -7,6 +7,7 @@ TEMPLATES = [
 
 
 def make_book(
+    series_title: str,
     title: str,
     book_id: str,
     author: str,
