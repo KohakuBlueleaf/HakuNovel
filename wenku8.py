@@ -4,8 +4,8 @@ requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
 import os, sys
 import asyncio
 
-from qbnovel.api import download
-from qbnovel.url_parser import parse_book_url
+from wenku8.api import download
+from wenku8.url_parser import parse_book_url
 from utils.http import get_count
 from utils.epub_editor import make_book
 from config import config
@@ -36,7 +36,7 @@ async def main():
         book = make_book(
             title,
             f'{title} {ep_title}',
-            f'QBNOVEL_{title}', 
+            f'WENKU8_{title}', 
             f'{author}', 
             ep_content
         )

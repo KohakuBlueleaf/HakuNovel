@@ -1,23 +1,25 @@
 import asyncio
-from aiohttp import ClientSession
+from httpx import AsyncClient
 from random import random
 
 
 count = 0
+client = AsyncClient()
+semaphore = asyncio.Semaphore(1)
 
 
 async def aio_get(url: str, *args, **kwargs) -> tuple[bytes, int]:
     global count
-    async with ClientSession() as Session:
-        async with Session.get(url, *args, **kwargs) as resp:
-            count += 1
-            return await resp.read(), resp.status
+    async with semaphore:
+        await asyncio.sleep(random() * 0.5)
+        resp = await client.get(url, *args, **kwargs)
+    count += 1
+    return resp.content, resp.status_code
 
 
 async def aio_size(url: str) -> int:
-    async with ClientSession() as Session:
-        async with Session.head(url) as resp:
-            return int(resp.headers['Content-Length'])
+    resp = await client.head(url)
+    return int(resp.headers['Content-Length'])
 
 
 def get_count():
