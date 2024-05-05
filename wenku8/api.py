@@ -11,8 +11,8 @@ from .url_parser import parse_book_url, parse_page_url
 
 
 APIS = [
-    'https://www.wenku8.net/novel/3/{bid}/index.htm',
-    'https://www.wenku8.net/novel/3/{bid}/{cid}'
+    'https://www.wenku8.net/novel/{bid_head}/{bid}/index.htm',
+    'https://www.wenku8.net/novel/{bid_head}/{bid}/{cid}'
 ]
 WARNING_THERSHOLD = 20
 HEADERS = {
@@ -31,6 +31,7 @@ async def read_chapter(
     retry = 0
     while True:
         raw, status = await aio_get(APIS[1].format(
+            bid_head = str(bid).strip()[0],
             bid = bid,
             cid = cid,
         ), headers=HEADERS)
@@ -75,6 +76,7 @@ async def get_toc(
     bid: str,
 ) -> tuple[str, str, dict[str, dict[str, str]]]:
     raw, _ = await aio_get(APIS[0].format(
+        bid_head = str(bid).strip()[0],
         bid = bid
     ), headers=HEADERS)
     soup = Soup(raw.decode('gbk'), features='html.parser')
