@@ -19,7 +19,7 @@ async def aio_get(url: str, *args, **kwargs) -> tuple[bytes, int]:
 
 async def aio_size(url: str) -> int:
     resp = await client.head(url)
-    return int(resp.headers['Content-Length'])
+    return int(resp.headers["Content-Length"])
 
 
 def get_count():
